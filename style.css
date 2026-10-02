@@ -81,12 +81,14 @@ nav#menu a:hover{color:var(--red-hi);border-color:var(--red)}
 @keyframes pulse{50%{transform:scale(1.12)}}
 
 /* Gallery */
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.gallery-group{margin-bottom:2.5rem}.gallery-group:last-child{margin-bottom:0}
+.gallery-group h3{margin:0 0 1rem;font:700 1.4rem var(--head);letter-spacing:.04em;text-transform:uppercase}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:1rem}
 .shot{aspect-ratio:4/3;padding:0;border:2px solid #3a3e44;background:#1b1d20;cursor:zoom-in;overflow:hidden;position:relative}
 .shot img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .shot:hover{border-color:var(--red)}.shot:hover img{transform:scale(1.08)}
 .shot.empty{cursor:default;display:grid;place-items:center;color:var(--metal);background:var(--carbon) 0 0/20px 20px #131313}
-.shot.empty::after{content:attr(data-label) " — adicione a foto em /images";font-size:.9rem;padding:1rem;text-align:center}
+.shot.empty::after{content:attr(data-label);font-size:.9rem;padding:1rem;text-align:center;overflow-wrap:anywhere}
 .lightbox{position:fixed;inset:0;z-index:100;background:#000e;display:grid;place-items:center;padding:1rem}
 .lightbox[hidden]{display:none}.lightbox img{max-height:90vh;border:3px solid var(--red)}
 .lb-x{position:absolute;top:1rem;right:1.2rem;font-size:2.6rem;line-height:1;background:none;border:0;color:#fff;cursor:pointer}

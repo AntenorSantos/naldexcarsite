@@ -8,14 +8,12 @@ const ADDRESS         = "R. Mil e Cinco - Planalto Formosa, Timon - MA, 65634-05
 const GOOGLE_MAPS_URL = "https://www.google.com/maps/place/NALDEXCAR/@-5.1107066,-42.8310087,17z/data=!3m1!4b1!4m6!3m5!1s0x78e37d7cc752b77:0xc8877340fddc9bf4!8m2!3d-5.1107066!4d-42.8310087!16s%2Fg%2F11y5vm5gq3?entry=ttu&g_ep=EgoyMDI2MDkyOS4wIKXMDSoASAFQAw%3D%3D" + encodeURIComponent(ADDRESS);
 const INSTAGRAM_URL   = "https://instagram.com/naldexcar";
 
-/* Galeria: troque os arquivos em /images ou edite esta lista */
+/* Galeria: adicione quatro fotos .jpeg em cada pasta indicada */
 const GALLERY = [
-  { src: "img/motor.img.png", alt: "Revisão de motor" },
-  { src: "img/trocar-oleo-carro.jpg", alt: "Troca de óleo" },
-  { src: "img/cuidados-freio.jpg", alt: "Manutenção de freios" },
-  { src: "img/suspensao.jpg", alt: "Suspensão" },
-  { src: "img/diagnostico.png", alt: "Diagnóstico" },
-  { src: "img/naldexcar.png", alt: "Oficina Naldex Car" }
+  { title: "Freios", folder: "freios", prefix: "freios" },
+  { title: "Injeção eletrônica", folder: "injecaoeletronica", prefix: "injecao" },
+  { title: "Revisões periódicas", folder: "revisoes", prefix: "revisoes" },
+  { title: "Suspensão", folder: "suspensao", prefix: "suspensao" },
 ];
 /* ===================================================== */
 
@@ -46,14 +44,28 @@ $$("#menu a").forEach(a => a.addEventListener("click", () => setMenu(false)));
 
 // Galeria + lightbox
 const gal = $("#gallery"), lb = $("#lightbox"), lbImg = $("img", lb);
-GALLERY.forEach(({ src, alt }) => {
-  const b = document.createElement("button");
-  b.className = "shot"; b.type = "button"; b.setAttribute("aria-label", "Ampliar: " + alt);
-  const img = new Image(); img.src = src; img.alt = alt; img.loading = "lazy";
-  img.onerror = () => { img.remove(); b.classList.add("empty"); b.dataset.label = alt; };
-  b.append(img);
-  b.addEventListener("click", () => { if (b.classList.contains("empty")) return; lbImg.src = src; lbImg.alt = alt; lb.hidden = false; $(".lb-x").focus(); });
-  gal.append(b);
+GALLERY.forEach(({ title, folder, prefix }) => {
+  const group = document.createElement("section");
+  group.className = "gallery-group";
+  const heading = document.createElement("h3");
+  heading.textContent = title;
+  const grid = document.createElement("div");
+  grid.className = "gallery";
+
+  for (let index = 1; index <= 4; index++) {
+    const src = `img/${folder}/${prefix}${index}.jpeg`;
+    const alt = `${title} — foto ${index}`;
+    const b = document.createElement("button");
+    b.className = "shot"; b.type = "button"; b.setAttribute("aria-label", "Ampliar: " + alt);
+    const img = new Image(); img.src = src; img.alt = alt; img.loading = "lazy";
+    img.onerror = () => { img.remove(); b.classList.add("empty"); b.dataset.label = `Adicionar foto: ${src}`; };
+    b.append(img);
+    b.addEventListener("click", () => { if (b.classList.contains("empty")) return; lbImg.src = src; lbImg.alt = alt; lb.hidden = false; $(".lb-x").focus(); });
+    grid.append(b);
+  }
+
+  group.append(heading, grid);
+  gal.append(group);
 });
 const closeLb = () => { lb.hidden = true; lbImg.src = ""; };
 lb.addEventListener("click", e => { if (e.target !== lbImg) closeLb(); });
